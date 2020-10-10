@@ -3,6 +3,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../database/dbConfig");
 
+const options = {
+  expiresIn: "1hr"
+}
+
 router.post('/register', async (req, res) => {
   // implement registration
   const {username, password} = req.body;
@@ -39,8 +43,16 @@ router.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compare(password, user.password)
 
     if(user && validPassword) {
+      const payload = {
+        userID: user.id,
+        username: user.username
+      }
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, options)
+
       res.status(200).json({
-        message: "logged in !"
+        message: "logged in !",
+        token: token
       })
     }
     else {
