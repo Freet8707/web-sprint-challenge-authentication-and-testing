@@ -10,7 +10,11 @@ const options = {
 router.post('/register', async (req, res) => {
   // implement registration
   const {username, password} = req.body;
-
+  if(!username && !password) {
+    return res.status(400).json({
+      message: "Please provide a username and password"
+    })
+  }
   return await db("users")
     .insert({
       username: username,
