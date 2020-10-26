@@ -33,18 +33,18 @@ describe("it should test the register and login routes", () =>{
 
     describe("It should login successfully", () => {
         it("should fail if password incorrect", async() => {
+            const failUser = {
+                username: "Jackie Chan",
+                password: "jackie1"
+            }
 
             const res = await request(server).post('/api/auth/login')
-                .send(testUser)
+                .send(failUser)
 
             expect(res.status).toBe(401)
         })
 
         it("should login with successful credentials", async () => {
-            const testUser = {
-                username: "Jackie Chan",
-                password: "jackie123"
-            };
             
             const res = await request(server).post('/api/auth/login')
                 .send(testUser)
